@@ -1,46 +1,244 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
-    <head>
-        <meta charset="utf-8">
-        <!--
-        Customize this policy to fit your own app's needs. For more guidance, please refer to the docs:
-            https://cordova.apache.org/docs/en/latest/
-        Some notes:
-            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-                * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-        <meta name="color-scheme" content="light dark">
-        <link rel="stylesheet" href="css/index.css">
-        <title>Home</title>
-    </head>
-    <body>
-        <div>
-            Hello
+<head>
+    <meta charset="utf-8">
+    <!--
+    Customize this policy to fit your own app's needs. For more guidance, please refer to the docs:
+        https://cordova.apache.org/docs/en/latest/
+    Some notes:
+        * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+        * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+            * Enable inline JS: add 'unsafe-inline' to default-src
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="css/index.css">
+    <title>Home</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .greeting {
+            font-family: 'Inter', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 36px;
+            color: black;
+            text-align: center;
+            margin-top: 10px;  /*adds space btwn greeting and top of page*/
+            margin-bottom: 10px; /* Add some space below the greeting text */
+        }
+
+        .username {
+            color: #FF2D55;
+        }
+
+        .calendar-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+            color: black;
+            text-decoration: none;
+            text-align: center;
+            display: block; /* Make the link a block element for full width */
+        }
+
+        .calendar-link img {
+            width: 30px; /* Adjust image size as needed */
+            height: 30px;
+            vertical-align: middle; /* Align the image vertically with the text */
+            margin-right: 5px; /* Add some space between the image and text */
+        }
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            display: flex;
+            margin-top: auto; /* Pushes the navbar to the bottom */
+            width: 100%; /* Ensures the navbar takes full width */
+        }
+
+        .navbar a {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            background-color: white; /* Set default background color */
+        }
+
+        .navbar a:first-child {
+            background-color: pink; /* Set background color for the first anchor tag */
+        }
+
+        .navbar a img {
+            width: 30px; /* Adjust image size as needed */
+            height: 30px;
+        }
+
+        .navbar a:hover img {
+            opacity: 0.7; /* Adjust hover effect */
+        }
+
+        .navbar a.active img {
+            filter: brightness(0) invert(1); /* Adjust active button effect */
+        }
+
+        .circle-container {
+            width: 360px;
+            height: 360px;
+            position: relative;
+            top: 15%; /* how far from top of page*/
+        }
+
+        .circle-section {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border-width: 20px;
+            border-style: solid;
+            box-sizing: border-box;
+        }
+
+        .phase-1 {
+            border-color: #FFD8DF; /* Color for phase 1 */
+            transform: rotate(0deg);
+        }
+
+        .phase-2 {
+            border-color: #E7E7FF; /* Color for phase 2 */
+            transform: rotate(90deg);
+        }
+
+        .phase-3 {
+            border-color: #B3B3B3; /* Color for phase 3 */
+            transform: rotate(180deg);
+        }
+
+        .phase-4 {
+            border-color: #B3B3B3; /* Color for phase 4 */
+            transform: rotate(270deg);
+        }
+
+        .text-container {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: #333; /* Text color */
+        }
+
+        .period-text {
+            font-size: 20px; /* Adjust font size */
+            font-weight: bold;
+            margin-bottom: 5px; /* Space between text and rectangles */
+        }
+
+        .text-container2 { /*creates the container the text will be in at the bottom of the circle*/
+            position: absolute;
+            top: 75%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: #a2a2a2; /* Text color */
+        }
+
+        .period-text2 { /*Accounts for the text at the bottom of the circle. the actual text inside starts line 214*/
+            font-size:18px; /* Adjust font size */
+            font-weight: bold;
+            font-family: sans-serif;
+            margin-bottom: 5px; /* Space between text and rectangles */
+        }
+
+        .rectangle-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column; /* Change to stack vertically */
+            align-items: center;
+            gap: 10px; /* Space between rectangles */
+        }
+
+        .rectangle {
+            width: 160px ;
+            padding: 10px 50px; /* Adjust padding */
+            background-color: #FFD8DF; /* Background color */
+            border-radius: 30px; /* Rounded corners */
+            display: inline-block;
+            color: #9D9D9D; /* Text color */
+            font-size: 18px; /* Font size */
+            font-family: 'Inter', sans-serif; /* Font family */
+            font-weight: 700; /* Font weight */
+            text-align: center; /* Center the text */
+        }
+
+        .rectangle:nth-child(2) {
+            background-color: #E7E7FF; /* Background color for the second rectangle */
+        }
+    </style>
+</head>
+<body>
+    <div class="greeting">GOOD MORNING, <span class="username">Melissa</span></div>
+
+    <a class="calendar-link" href="ExpandedCalendarView.html">
+        <img src="img/calendar.png" alt="Calendar">
+        July 2024
+    </a>
+
+    <div class="circle-container">
+        <div class="circle-section phase-1"></div>
+        <div class="circle-section phase-2"></div>
+        <div class="circle-section phase-3"></div>
+        <div class="circle-section phase-4"></div>
+
+        <div class="text-container">
+            <div class="period-text">Period Day 3</div>
         </div>
-        <script src="cordova.js"></script>
-        <script src="js/index.js"></script>
-    </body>
+
+        <div class="text-container2">
+            <div class="period-text2">Menstrual Phase</div>
+            </div>
+
+        <div class="rectangle-container">
+            <a href="cyclephase.html" class="rectangle">Daily Log</a>
+            <div class="rectangle" id="padsRemaining">Pads remaining: <span id="padsCount">3</span></div>
+        </div>
+    </div>
+
+    <div>
+        <!-- Your home page content goes here -->
+    </div>
+
+    <div class="navbar">
+        <a class="active" href="home.html"><img src="img/Rectangle 64.png" alt="Home"></a>
+        <a href="ExpandedCalendarView.html"><img src="img/calendar.png" alt="Calendar"></a>
+        <a href="profile.html"><img src="img/Avatar.png" alt="Profile"></a>
+        <a href="Settings.html"><img src="img/settings.png" alt="Settings"></a>
+    </div>
+
+    <script src="cordova.js"></script>
+    <script src="js/index.js"></script>
+    <script>
+        // JavaScript code to update the pads remaining count dynamically
+        // Replace the padsCount value with the actual number of pads remaining
+        document.getElementById('padsCount').textContent = '3'; // Example: 3 pads remaining
+    </script>
+</body>
 </html>
